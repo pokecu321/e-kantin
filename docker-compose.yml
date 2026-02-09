@@ -1,0 +1,18 @@
+services:
+
+    # UTAMA
+  web-server:
+    image: php:8.2-apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./website:/var/www/html
+
+      # INI UNTUK DATA BASE
+  my-database:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: inikantin
+      MYSQL_DATABASE: kantin
+    ports:
+      - "3307:3306"
