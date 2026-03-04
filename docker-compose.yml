@@ -1,18 +1,69 @@
-services:
+# services:
 
-    # UTAMA
+#     # UTAMA
+#   web-server:
+#     # image: php:8.2-apache
+#     build: .
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - ./website:/var/www/html
+
+#       # INI UNTUK DATA BASE
+#   my-database:
+#     image: mysql:latest
+#     environment:
+#       MYSQL_ROOT_PASSWORD: inikantin
+#       MYSQL_DATABASE: kantin
+#     ports:
+#       - "3307:3306"
+#     volumes:
+#       - ./mysql_data:/var/lib/mysql
+
+
+services:
+  # SERVER PHP & APACHE
   web-server:
-    image: php:8.2-apache
+    build: 
+      context: ./docker/php/
+      dockerfile: Dockerfile
     ports:
       - "8080:80"
     volumes:
       - ./website:/var/www/html
+    depends_on:
+      - my-database
+    networks:
+      - kantin-network
 
-      # INI UNTUK DATA BASE
+  # DATABASE MYSQL
   my-database:
-    image: mysql:latest
+    image: mysql:8.0
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: inikantin
       MYSQL_DATABASE: kantin
+      MYSQL_USER: user_kantin
+      MYSQL_PASSWORD: password_kantin
     ports:
       - "3307:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - kantin-network
+
+  # DATABASE MANAGER (Akses di localhost:8081)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: my-database
+    depends_on:
+      - my-database
+    networks:
+      - kantin-network
+
+networks:
+  kantin-network:
+    driver: bridge
