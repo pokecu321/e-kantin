@@ -31,4 +31,18 @@ syntax
     docker-compose logs -f : Melihat catatan (log) error yang terjadi di server secara real-time.
 
 Rekomendasi: Untuk ngoding sehari-hari, cukup gunakan stop dan start agar laptop tidak berat dan data aman.
+======================================
+| jangan jalanin docker-compose down |
+======================================
+
+
+jangan lupa untuk extension devcontainer
+
+
+
+kalau php tidak jalan,jalanin 
+apache2-foreground
+ctrl + c untuk membuat php/apache berhenti
+
+
 
